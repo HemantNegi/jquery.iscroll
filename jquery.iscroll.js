@@ -27,7 +27,7 @@ function iscroll($e, options) {
         sendReqonInit:false,
         autoTrigger: true, //must be true for autoTriggerUntil
         autoTriggerUntil: false,
-        next:'a._next',
+        next:'a:last',
         onBeginRequest: null,
         ondataArrival: null
     };
@@ -45,7 +45,7 @@ function iscroll($e, options) {
         if (O.S.onBeginRequest != null) O.S.onBeginRequest();
         ctr++;
 
-        SQ.Ajax.get(reqUrl, O.S.optionsData, function (d) {
+        $.get(reqUrl, O.S.optionsData, function (d) {
 
                 loader.remove();
                 if (O.S.ondataArrival != null) O.S.ondataArrival(d);

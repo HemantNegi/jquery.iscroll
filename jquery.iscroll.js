@@ -22,7 +22,7 @@ function iscroll($e, options) {
 
     O.S = {
         Loadingoffset: 20,
-        optionsData: '{}',
+        optionsData: {},
         loadingHtml: '<small>Loading...</small>', // null
         sendReqonInit:false,
         autoTrigger: true, //must be true for autoTriggerUntil

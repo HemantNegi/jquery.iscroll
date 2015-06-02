@@ -9,14 +9,15 @@
  */
 
 function iscroll($e, options) {
-    var O = this,
-        _isWindow = ($e.css('overflow-y') === 'visible'),
+
+    var _isWindow = ($e.css('overflow-y') === 'visible'),
         $scroll = _isWindow? $(document) : $e,
         stopReqs = false,
         reqUrl = '',
         isLoading = false,
         loader = null,
-        ctr=0;
+        ctr= 0,
+        O = this;
 
 
 
@@ -80,8 +81,8 @@ function iscroll($e, options) {
     };
 
 
-    this.ConnectScrollLoad = function () {
-        $scroll.on('scroll.sq', function () {
+    O.ConnectScrollLoad = function () {
+        $scroll.on('scroll.iscroll', function () {
                 var iHeight = _isWindow ? $scroll.height() : $scroll.prop('scrollHeight');
                 var tHeight = _isWindow ? $(window).height() : $scroll.height();
                 //$('.testing').scrollTop() >= $('.testing').prop('scrollHeight') - $('.testing').height() - O.S.Loadingoffset
@@ -92,27 +93,37 @@ function iscroll($e, options) {
         });
     };
 
+    O.reset = function(){
+        $scroll.off('scroll.iscroll');
+        O.init();
+    }
 
-    this.init = function () {
-        $.extend(this.S, options);
+    /** destroy the current instance  **/
+    O.destroy = function(){
+        $scroll.off('scroll.iscroll');
+        delete $e[0].iscroll;
+        return $e;
+        //TODO: restore the link
+    };
+
+
+    O.init = function () {
+        $.extend(O.S, options);
         if(O.S.autoTrigger)O.ConnectScrollLoad();
         O.setNext();
         if (O.S.sendReqonInit)
             O.RequestItems();
     }
-    this.init();
+    O.init();
+
+    return O;
 }
 
 
 $.fn.iscroll = function(m) {
     return this.each(function() {
-        var $this = $(this),
-            data = $this.data('iscroll');
-
-        // return if already initialized.
-        if (data && data.initialized) {
-            return;
-        }
-        data = new iscroll($this, m);
+        var $this = $(this);
+            if(this.iscroll)return;
+        this.iscroll = new iscroll($this, m)
     });
 };
